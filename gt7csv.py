@@ -171,7 +171,7 @@ sys.stdout.flush()
 log_name = dt.now().strftime('%Y%m%d_%H%M%S')
 csv_name = f'data/{log_name}.csv'
 csv = open(file=csv_name, mode='w')
-print('#Lap\tX\tY\tZ\tSpeed', file=csv, flush=True)
+print('#Lap\tX\tY\tZ\tEast\tNorth\tAlt\tSpeed', file=csv, flush=True)
 
 prevlap = -1
 pktid = 0
@@ -369,8 +369,9 @@ while True:
 			printAt('0xF0 FLOAT {:11.5f}'.format(struct.unpack('f', ddata[0xF0:0xF0+4])[0]), 39, 71)			# 0xF0 = ???
 
 			printAt('{:>10}'.format(pktid), 1, 83)						# packet id
-			(x,y,z) = (posX, -posZ, posY)
-			csv_line = '{:3.0f}\t{:11.5f}\t{:11.5f}\t{:11.5f}\t{:11.5f}'.format(curlap, x, y, z, carSpeed)
+
+			(East, North, Alt) = (posX, -posZ, posY)
+			csv_line = '{:3.0f}\t{:11.5f}\t{:11.5f}\t{:11.5f}\t{:11.5f}\t{:11.5f}\t{:11.5f}\t{:11.5f}'.format(curlap, posX, posY, posZ, East, North, Alt, carSpeed)
 			print(csv_line, file=csv, flush=True)
 
 		if pknt > 100:
